@@ -35,4 +35,15 @@ public class FriendService {
         friendRepository.deleteById(id);
     }
 
+    public Friend updateFriendById(Friend aFriend, Integer id) {
+        Friend toUpdate = friendRepository.findById(id).get();
+        
+        toUpdate.setId(aFriend.getId());
+        toUpdate.setName(aFriend.getName());
+        toUpdate.setNumCats(aFriend.getNumCats());
+        toUpdate.setCanEatHeadOfLettuce(aFriend.isCanEatHeadOfLettuce());
+
+        return friendRepository.save(toUpdate);
+    }
+
 }

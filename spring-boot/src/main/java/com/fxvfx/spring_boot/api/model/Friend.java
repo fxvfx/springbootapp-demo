@@ -44,11 +44,11 @@ public class Friend {
         this.name = name;
     }
 
-    public Integer getnumCats() {
+    public Integer getNumCats() {
         return numCats;
     }
 
-    public void setnumCats(Integer numCats) {
+    public void setNumCats(Integer numCats) {
         this.numCats = numCats;
     }
 
