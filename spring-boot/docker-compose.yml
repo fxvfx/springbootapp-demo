@@ -1,0 +1,24 @@
+services:
+  db:
+    container_name: postgres-spring-boot
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: fxvfx
+      POSTGRES_PASSWORD: apple
+      POSTGRES_DB: datasource
+    volumes:
+      - db:/data/postgres
+    ports:
+        # Optional: make exposed port "5332:5432" in case of conflicts on port 5432
+        - "5432:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+# If you have more than one container and want them to communicate through the same network
+networks:
+  db:
+      driver: bridge
+
+volumes:
+  db:
