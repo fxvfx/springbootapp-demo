@@ -1,0 +1,138 @@
+#%RAML 1.0
+title: Friends API
+version: v1
+baseUri: localhost:8080/api/v1/
+
+description:
+    This is a basic API for creation of "friends", to demonstrate basic CRUD operations via Spring Boot.
+
+
+
+/:
+    get:
+        description: Basic health check for app.
+        responses:
+            200:
+                body:
+                    String:
+                        "API is running & accessible."
+
+/friends:
+    get:
+        description: Retrieve all friends in the database.
+        responses:
+            200:
+                body:
+                    application/json:
+                        example:
+                            [
+                                {
+                                    "id": 1,
+                                    "name": "Eric",
+                                    "numCats": 2,
+                                    "canEatHeadOfLettuce": false
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "Theo",
+                                    "numCats": 1,
+                                    "canEatHeadOfLettuce": false
+                                }
+                            ]
+    
+
+    post:
+        description: Add new friend(s) to the database.
+        headers: 
+            Content-Type: application/json
+        body:
+            application/json:
+                example:
+                    [
+                        {"name": "Eric", "numCats": 2, "canEatHeadOfLettuce": false},
+                        {"name": "Theo", "numCats": 1, "canEatHeadOfLettuce": false}
+                    ]
+        responses:
+            201:
+                body:
+                    application/json:
+                        example:
+                        [
+                            {"name": "Eric", "numCats": 2, "canEatHeadOfLettuce": false},
+                            {"name": "Theo", "numCats": 1, "canEatHeadOfLettuce": false}
+                        ]
+            # //TODO: reponse for improperly formatted payload input
+
+/friends/{id}:
+    get:
+        description: Get a specific friend.
+        responses:
+            200:
+                body:
+                    application/json:
+                        example:
+                            {
+                                "id": 1,
+                                "name": "Eric",
+                                "numCats": 2,
+                                "canEatHeadOfLettuce": false
+                            }
+            404:
+                body
+                    application/json:
+                        example:
+                            {
+                                "timestamp": "2025-07-14T19:31:03.891077500Z",
+                                "status": 404,
+                                "error": "Resource not found",
+                                "message": "Friend 1 not found.",
+                                "path": "/api/v1/friends/1"
+                            }
+            
+            
+    put:
+        description: Update a specific friend.
+        headers:
+            Content-Type: application/json
+        body:
+            application/json:
+                example:
+                    {
+                        "id": 1,
+                        "name": "Cire",
+                        "numCats": -2,
+                        "canEatHeadOfLettuce": true
+                    }
+        responses:
+            204:
+                description: Friend updated successfully.
+            404:
+                body:
+                    application/json:
+                        example:
+                            {
+                                "timestamp": "2025-07-14T19:31:03.891077500Z",
+                                "status": 404,
+                                "error": "Resource not found",
+                                "message": "Friend 1 not found.",
+                                "path": "/api/v1/friends/1"
+                            }
+    delete:
+        description: Delete a specific friend.
+        responses:
+            200:
+               body:
+                    String:
+                        example:
+                            "Friend "Eric" deleted successfully."
+            404:
+                body:
+                    application/json:
+                        example:
+                            {
+                                "timestamp": "2025-07-14T19:31:03.891077500Z",
+                                "status": 404,
+                                "error": "Resource not found",
+                                "message": "Friend 1 not found.",
+                                "path": "/api/v1/friends/1"
+                            }
