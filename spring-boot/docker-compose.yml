@@ -1,6 +1,6 @@
 services:
-  db:
-    container_name: postgres-spring-boot
+  postgres:
+    container_name: postgres-postgresql-api
     image: postgres:latest
     environment:
       POSTGRES_USER: fxvfx
@@ -14,6 +14,22 @@ services:
     networks:
       - db
     restart: unless-stopped
+
+  # single container app
+  app:
+    build: .
+    container_name: my-spring-app
+    image: friendapidemo
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/datasource
+      SPRING_DATASOURCE_USERNAME: fxvfx
+      SPRING_DATASOURCE_PASSWORD: apple
+    ports:
+      - "8080:8080"
+    networks:
+      - db
 
 # If you have more than one container and want them to communicate through the same network
 networks:
