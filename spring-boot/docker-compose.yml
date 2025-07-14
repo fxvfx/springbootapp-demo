@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: postgres-postgresql-api
+    container_name: postgres
     image: postgres:latest
     environment:
       POSTGRES_USER: fxvfx
@@ -12,13 +12,12 @@ services:
         # Optional: make exposed port "5332:5432" in case of conflicts on port 5432
         - "5432:5432"
     networks:
-      - db
+      - postgresql_network
     restart: unless-stopped
 
-  # single container app
   app:
     build: .
-    container_name: my-spring-app
+    container_name: friendapidemo
     image: friendapidemo
     depends_on:
       - postgres
@@ -29,11 +28,11 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - db
+      - postgresql_network
 
 # If you have more than one container and want them to communicate through the same network
 networks:
-  db:
+  postgresql_network:
       driver: bridge
 
 volumes:

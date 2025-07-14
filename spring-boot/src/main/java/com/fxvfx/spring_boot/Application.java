@@ -3,6 +3,7 @@ package com.fxvfx.spring_boot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
@@ -14,7 +15,8 @@ public class Application {
 	}
 
 	@GetMapping
-	public String helloWorld() {
-		return "Hello Spring Boot World!";
+	@RequestMapping("api/v1/")
+	public String healthCheck() {
+		return "API is running & accessible.";
 	}
 }

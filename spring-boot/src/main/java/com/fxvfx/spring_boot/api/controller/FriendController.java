@@ -2,6 +2,8 @@ package com.fxvfx.spring_boot.api.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,29 +27,32 @@ public class FriendController {
     }
     
     @GetMapping()
-    public List<Friend> getFriends() {
-        return friendService.getAllFriends();
+    public ResponseEntity<List<Friend>> getFriends() {
+        return ResponseEntity.ok(friendService.getAllFriends());
     }
 
     @PostMapping
-    public void addNewFriend(@RequestBody Friend aFriend) {
-        friendService.insertFriend(aFriend);
+    public ResponseEntity<List<Friend>> addNewFriends(@RequestBody Friend[] friends) {
+        return new ResponseEntity<>(friendService.insertFriends(friends), HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public Friend getFriendById(@PathVariable Integer id) {
-        return friendService.getFriendById(id);
+    public ResponseEntity<Friend> getFriendById(@PathVariable Integer id) {
+        return ResponseEntity.ok(friendService.getFriendById(id));
     }
 
     @DeleteMapping("{id}")
-    public void delFriendById(@PathVariable Integer id) {
-        friendService.delFriendById(id);
+    public ResponseEntity<String> delFriendById(@PathVariable Integer id) {
+        Friend delFriend = friendService.delFriendById(id);
+        return ResponseEntity.ok("Friend \"" + delFriend.getName() + "\" deleted successfully."); // can also send 204 w/ no body
     }
 
     @PutMapping("{id}")
-    public Friend updateFriendByid(@RequestBody Friend aFriend, @PathVariable Integer id) {
-        return friendService.updateFriendById(aFriend, id);
+    public ResponseEntity<Void> updateFriendByid(@RequestBody Friend aFriend, @PathVariable Integer id) {
+        friendService.updateFriendById(aFriend, id);
+        return ResponseEntity.noContent().build();
     }
 }
+
 
 
